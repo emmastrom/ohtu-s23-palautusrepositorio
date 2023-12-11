@@ -8,16 +8,48 @@ class Komento(Enum):
     NOLLAUS = 3
     KUMOA = 4
 
+class Summa:
+    def __init__(self, sl, syote):
+        self.syote = syote
+        self.io = sl
+
+    def suorita(self):
+        self.io.plus(int(self.syote()))
+
+class Erotus:
+    def __init__(self, sl, syote):
+        self.syote = syote
+        self.io = sl
+
+    def suorita(self):
+        self.io.miinus(int(self.syote()))
+
+class Nollaus:
+    def __init__(self, sl, syote):
+        self.syote = syote
+        self.io = sl
+
+    def suorita(self):
+        self.io.nollaa()
+
+class Kumoa:
+    def __init__(self, sl, syote):
+        self.syote = syote
+        self.io = sl
+
+    def suorita(self):
+        self.io.kumoa()
+
 class Kayttoliittyma:
     def __init__(self, sovelluslogiikka, root):
         self._sovelluslogiikka = sovelluslogiikka
         self._root = root
 
         self._komennot = {
-            Komento.SUMMA: self._sovelluslogiikka.plus(self._lue_syote),
-            Komento.EROTUS: self._sovelluslogiikka.miinus(self._lue_syote),
-            Komento.NOLLAUS: self._sovelluslogiikka.nollaa(),
-           # Komento.KUMOA: Kumoa(sovelluslogiikka, self._lue_syote)
+            Komento.SUMMA: Summa(sovelluslogiikka, self._lue_syote),
+            Komento.EROTUS: Erotus(sovelluslogiikka, self._lue_syote),
+            Komento.NOLLAUS: Nollaus(sovelluslogiikka, self._lue_syote),
+            Komento.KUMOA: Kumoa(sovelluslogiikka, self._lue_syote)
         }
 
     def kaynnista(self):
@@ -65,7 +97,7 @@ class Kayttoliittyma:
 
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
-        komento_olio
+        komento_olio.suorita()
         self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovelluslogiikka.arvo() == 0:
